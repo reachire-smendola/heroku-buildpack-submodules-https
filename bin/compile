@@ -1,0 +1,27 @@
+#!/bin/bash
+
+APP_DIR="$1"
+ENV_DIR="$3"
+
+# load required environment variables
+GIT_TOKEN=$(<"$ENV_DIR/GIT_TOKEN")
+
+if [[ -z $GIT_TOKEN ]]; then
+    echo "Did you forget to set GIT_TOKEN?"
+    exit 1
+fi
+
+# make sure we're in the root of the app dir
+cd "$APP_DIR"
+
+# ensure the .gitsubmodules file is there
+echo "-----> Initializing submodules"
+git init submodules
+
+# replace SSH urls with HTTPS urls and include the token
+echo "-----> Redirecting submodules to HTTPS"
+sed -i -e "s/git@github.com:/https:\/\/$GIT_TOKEN@github.com\//" ./.gitmodules
+
+# update the submodules
+echo "-----> Updating submodules"
+git submodule -q update --init --recursive
