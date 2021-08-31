@@ -16,7 +16,7 @@ cd "$APP_DIR"
 
 # ensure the .gitsubmodules file is there
 echo "-----> Initializing submodules"
-git init submodules
+git submodule init
 
 # replace SSH urls with HTTPS urls and include the token
 echo "-----> Redirecting submodules to HTTPS"
