@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -e
 
 APP_DIR="$1"
 ENV_DIR="$3"
@@ -19,18 +19,11 @@ git init -q
 
 # ensure the .gitsubmodules file is there
 echo "-----> Initializing submodules"
-git submodule init
+git submodule -q update --init --recursive
 
-echo '--BEFORE--'
-cat .gitmodules
-echo '----------'
 # replace SSH urls with HTTPS urls and include the token
 echo "-----> Redirecting submodules to HTTPS"
 sed -i -e "s/git@github.com:/https:\/\/$GIT_TOKEN@github.com\//" ./.gitmodules
-
-echo '--AFTER--'
-cat .gitmodules
-echo '---------'
 
 # update the submodules
 echo "-----> Updating submodules"
