@@ -18,9 +18,18 @@ cd "$APP_DIR"
 echo "-----> Initializing submodules"
 git submodule init
 
+git status
+
+echo '--BEFORE--'
+cat .gitmodules
+echo '----------'
 # replace SSH urls with HTTPS urls and include the token
 echo "-----> Redirecting submodules to HTTPS"
 sed -i -e "s/git@github.com:/https:\/\/$GIT_TOKEN@github.com\//" ./.gitmodules
+
+echo '--AFTER--'
+cat .gitmodules
+echo '---------'
 
 # update the submodules
 echo "-----> Updating submodules"
